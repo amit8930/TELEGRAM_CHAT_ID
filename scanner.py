@@ -129,34 +129,3 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Error scanning {ticker}: {e}")
           
-      name: Harmonic Scanner Cron
-
-on:
-  schedule:
-    # Runs every hour, Monday to Friday
-    - cron: '0 * * * 1-5'
-  workflow_dispatch: # Allows manual trigger from GitHub UI
-
-jobs:
-  scan-and-notify:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-          pip install numpy pandas yfinance scipy requests
-
-      - name: Run Harmonic Scanner
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python scanner.py
